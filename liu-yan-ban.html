@@ -24,7 +24,7 @@
     var index=0;
     addMsg.onclick=function(){//点击添加留言事件
         index++;
-        var li=document.createElement('li');//创建一个li标签
+        var li=document.createElement('li');//创建一个li标签!!!!!!
         var msg=document.getElementById('msg');//获取留言内容
         var text=document.createTextNode("第"+index+"条"+msg.value);//创建文本节点
         li.appendChild(text);//将留言追加到li中
