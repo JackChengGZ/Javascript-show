@@ -8,3 +8,5 @@ lun-bo-0.html 这是一个关于轮播布局 [demo](https://jackchenggz.github.i
 liu-yan-ban.html 这是一个关于留言板小功能 [demo](https://jackchenggz.github.io/Javascript-show/liu-yan-ban.html) 
 
 er-ji-lian-dong.html 这是一个关于二级联动 [demo](https://jackchenggz.github.io/Javascript-show/er-ji-lian-dong.html)
+
+tab-qie-huan.html 这是一个关于二级联动 [demo](https://jackchenggz.github.io/Javascript-show/tab-qie-huan.html)
