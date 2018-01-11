@@ -9,4 +9,4 @@ liu-yan-ban.html 这是一个关于留言板小功能 [demo](https://jackchenggz
 
 er-ji-lian-dong.html 这是一个关于二级联动 [demo](https://jackchenggz.github.io/Javascript-show/er-ji-lian-dong.html)
 
-tab-qie-huan.html 这是一个关于二级联动 [demo](https://jackchenggz.github.io/Javascript-show/tab-qie-huan.html)
+tab-qie-huan.html 这是一个关于Tab标签的切换，而且采用了面向对象的方法 [demo](https://jackchenggz.github.io/Javascript-show/tab-qie-huan.html)
