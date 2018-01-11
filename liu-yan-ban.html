@@ -29,7 +29,7 @@
         var text=document.createTextNode("第"+index+"条"+msg.value);//创建文本节点
         li.appendChild(text);//将留言追加到li中
         if(content.children.length>0){//如果content的子节点存在li
-            content.insertBefore(li,content.children[0]);//在第一个子节点前面插入li
+            content.insertBefore(li,content.children[0]);//在第一个子节点前面插入li!!!!!
         }else{
             content.appendChild(li);
         }
