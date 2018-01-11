@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!--二级菜单-->
+<select name="" id="province">
+</select>
+<select name="" id="city">
+    <option value="0" id="optionCity">请选择城市</option>
+</select>
+</body>
+<script type="application/javascript">
+    //    二级菜单联动
+    var dataProvince=['请选择省份','浙江省','安徽省','江苏省'];//定义一个省份的数组
+    var dataCity=[//定义一个城市数组
+        ['请选择城市'],
+        ['杭州市','温州市','嘉兴市','台州市'],
+        ['合肥市','芜湖市','六安市','安庆市'],
+        ['南京市','苏州市','扬州市','滁州市']
+    ];
+    var province=document.getElementById('province');//获取省份下拉的对象
+    var city=document.getElementById('city');////获取下拉城市的对象
+    for(var j=0;j<dataProvince.length;j++){//循环遍历省份的数组
+        var optionEleProvince=document.createElement('option');//创建一个省份下的option标签
+        var optionTextCity=document.createTextNode(dataProvince[j]);//为省份下的option标签创建一个文本节点
+        optionEleProvince.appendChild(optionTextCity);//将文本节点追加到option标签中
+        province.appendChild(optionEleProvince);//将已完成的option标签追加到省份province对象中
+    }
+    province.onchange=function(){//为选中的省份绑定onchange事件
+        city.innerHTML="";//做清空操作，防止下一次选中的省份的城市追加到上一次的城市列表中
+        var provinceSelectedIndex=province.selectedIndex;//获取当前选中省份option的index
+        var optionNowSelectedProvice=dataCity[provinceSelectedIndex];//根据相对应的省份的index,获取数组省份的城市
+        for(var i=0;i<optionNowSelectedProvice.length;i++){//循环获取到的城市数组
+            var optionEleCity=document.createElement('option');//创建一个城市的option标签
+            var optionTextCity=document.createTextNode(optionNowSelectedProvice[i]);//城市下的option标签创建一个文本节点
+            optionEleCity.appendChild(optionTextCity);//将文本节点追加到option标签中
+            city.appendChild(optionEleCity);//将已完成的option标签追加到城市city对象中
+        }
+    }
+
+</script>
+</html>

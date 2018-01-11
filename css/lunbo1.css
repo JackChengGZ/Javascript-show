@@ -1,0 +1,61 @@
+@charset "utf-8";
+*{
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+body{
+    font-size:14px;
+    background: rgba(230, 237, 204, 0.39);
+}
+.banner_wrap{
+    width: 790px;
+    height: 340px;
+    overflow: hidden;
+    margin:0 auto;
+    position: relative;
+}
+.banner_wrap .banner{
+    width: 6000px;
+    position:relative;
+    left: -790px;
+    /*transition: all 1s;*/
+}
+.banner_wrap .banner img{
+    float: left;
+}
+.banner_wrap span{
+    display: inline-block;
+    width: 30px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    background: #9966FF;
+    position: absolute;
+    top: 140px;
+    cursor: pointer;
+}
+.banner_wrap span.prev{
+    left: 0;
+}
+.banner_wrap span.next{
+    right: 0;
+}
+.banner_wrap .circle{
+    list-style: none;
+    position: absolute;
+    bottom: 15px;
+    left: 295px;
+}
+.banner_wrap .circle li{
+    width: 15px;
+    height: 15px;
+    border-radius:50%;
+    float: left;
+    background: #fff;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.banner_wrap .circle li.active{
+    background: red;
+}

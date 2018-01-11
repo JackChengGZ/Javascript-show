@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <style>
+        *{ margin:0; padding:0; list-style:none;}
+        .scroll{ width:500px; height:100px; margin:100px; position:relative; background:#f00; overflow:hidden;}
+        .scroll ul{ height:100px; position:absolute; left:0px; top:0px;}
+        .scroll li{ width:100px; height:100px; float:left; line-height:100px; text-align:center; font-size:30px; color:#fff; font-family:Tahoma, Geneva, sans-serif}
+        .btn_l,.btn_r{ display:block; width:20px; height:100px; background:#000; font-size:24; position:absolute; z-index:10; text-align:center; color:#fff; line-height:100px; background:rgba(0,0,0,0.6); cursor:pointer; display:none;}
+        .btn_l{ left:0px; top:0px;}
+        .btn_r{ right:0px; top:0px;}
+    </style>
+    <script>
+        window.onload=function(){
+            var oLi=document.getElementsByTagName('li');
+            var oUl=document.getElementsByTagName('ul')[0];
+            var oDiv=document.getElementsByClassName('scroll')[0];
+            var btn=document.getElementsByTagName('a');
+            //复制两份ul里面的内容到ul中，为的是实现无缝
+            oUl.innerHTML+=oUl.innerHTML;
+            //计算新的ul的长度
+            oUl.style.width=oLi[0].offsetWidth*oLi.length+'px';
+            console.log(oUl.style.width);//1000px
+            //设置速度
+            var speed=-2;
+            function move(){
+                //向左移动
+//                console.log(oUl.offsetLeft);
+                if(oUl.offsetLeft<-oUl.offsetWidth/2){
+                    oUl.style.left='0';
+
+                }
+                //向右移动
+                else if(oUl.offsetLeft>0){
+                    oUl.style.left=-oUl.offsetWidth/2+'px';
+
+                }
+                //设置ul的left值
+                oUl.style.left=oUl.offsetLeft+speed+'px';
+
+            }
+            var timer=setInterval(move,50);
+            oDiv.onmouseover=function(){
+                clearInterval(timer);
+                btn[0].style.display='block';
+                btn[1].style.display='block';
+
+            }
+            oDiv.onmouseout=function(){
+                clearInterval(timer);
+                timer=setInterval(move,30);
+                btn[0].style.display='none';
+                btn[1].style.display='none';
+            }
+//            改变speed值即可以改变滚动方向
+            btn[0].onclick=function(){
+                speed=-2;
+            }
+            btn[1].onclick=function(){
+                speed=2;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<div class="scroll">
+    <ul>
+        <li style="background:#060;">1</li>
+        <li style="background:#09C;">2</li>
+        <li style="background:#96F;">3</li>
+        <li style="background:#630;">4</li>
+        <li style="background:#666;">5</li>
+    </ul>
+    <a class="btn_l"><</a>
+    <a class="btn_r">></a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>无缝轮播</title>
+    <link rel="stylesheet" href="css/lunbo1.css"/>
+</head>
+<body>
+    <div class="banner_wrap">
+        <div class="banner">
+            <img src="img/5.jpg" alt="假5"/>
+            <img src="img/1.jpg" alt=""/>
+            <img src="img/2.jpg" alt=""/>
+            <img src="img/3.jpg" alt=""/>
+            <img src="img/4.jpg" alt=""/>
+            <img src="img/5.jpg" alt=""/>
+            <img src="img/1.jpg" alt="假1"/>
+        </div>
+        <span class="prev">左</span>
+        <span class="next">右</span>
+        <ul class="circle">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
+</body>
+<script type="application/javascript">
+//    原生js实现无缝轮播
+var banner_wrap=document.getElementsByClassName('banner_wrap')[0];
+    var banner=document.getElementsByClassName('banner')[0];
+    var prev=document.getElementsByClassName('prev')[0];
+    var next=document.getElementsByClassName('next')[0];
+    var oImg=banner.getElementsByTagName('img')[0];
+    var oImgWidth=banner_wrap.offsetWidth;//获取一张图片的宽度,这个是通过banner_wrap获取,如果通过图片获取会出现一个问题，就是在清除缓存之后，图片加载没有那么快或者是加载失败，这个宽度的获取不到的为0
+    var cir=document.getElementsByClassName('circle')[0];
+    var ali=cir.getElementsByTagName('li');
+    var num=1;
+//封装向左移动的函数
+    function scrollLeft(){
+        num++;//2
+        if(num==6){
+            num=0;
+            banner.style.left=-num*oImgWidth+'px';
+            banner.style.transition='all 0s';
+            num=1;
+        }
+        setTimeout(function(){
+//            alert(num);
+//            alert(oImgWidth);
+            banner.style.left=-num*oImgWidth+'px';
+//            alert(banner.style.left);
+            banner.style.transition='all 1s';
+        },0);
+    //        setTimeout();运行机制 先执行 主线程里面的语句，之后执行setTimeout内部里面的语句
+    //        js操作会有dom操作的合并
+        for(var i=0;i<ali.length;i++){
+            ali[i].className='';
+        }
+        ali[num-1].className='active';
+    }
+    //点击下一个
+    next.onclick=function(){
+        scrollLeft();
+    }
+    //点击上一个
+    prev.onclick=function(){
+     num--;//0 7
+     if(num==0){
+        num=6;
+        banner.style.left=-num*oImgWidth+'px';
+        banner.style.transition='all 0s';
+        num=5;
+    }
+    setTimeout(function(){
+        banner.style.left=-num*oImgWidth+'px';
+        banner.style.transition='all 1s';
+    },0);
+//setTimeout();运行机制 先执行 主线程里面的语句，之后执行setTimeout内部里面的语句
+//js操作会有dom操作的合并
+    for(var i=0;i<ali.length;i++){
+        ali[i].className='';
+    }
+    ali[num-1].className='active';
+    }
+    var timer=setInterval(function(){
+        scrollLeft();
+    },2500);
+
+    banner_wrap.onmouseover=function(){
+        clearInterval(timer);
+    }
+    banner_wrap.onmouseout=function(){
+        timer=setInterval(function(){
+            scrollLeft();
+        },2500);
+    }
+    for(var i=0;i<ali.length;i++){
+        ali[i].index=i;
+        ali[i].onmouseover=function(){
+            for(var j=0;j<ali.length;j++){
+                ali[j].className='';
+            }
+            this.className='active';
+            num=this.index+1;
+            banner.style.left=-num*oImgWidth+'px';
+            banner.style.transition='all 1s';
+        }
+
+
+    }
+</script>
+</html>
