@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+			.content{
+				width: 800px;
+				height: 400px;
+				border: 1px solid #000;
+				margin: 0 auto;
+			}
+			.content .tabs li{
+				float: left;
+				width: 200px;
+				height: 50px;
+				cursor: pointer;
+			}
+			.content .tabs li.active{
+				background: #2a96d8;
+			}
+			.content .contentBlock{
+				width: 800px;
+				height: 310px;
+				display: none;
+			}
+			.content div.active{
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content" id="tabContent">
+			<ul class="tabs">
+				<li class="active">标签1</li>
+				<li>标签2</li>
+				<li>标签3</li>
+				<li>标签4</li>
+			</ul>
+			<div class="contentBlock active">
+				标签1的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur aut dolorum ea earum eligendi esse excepturi explicabo id laborum molestiae nemo neque nobis non numquam praesentium provident quae, soluta tempora!
+			</div>
+			<div class="contentBlock">
+				标签2的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio fugit neque praesentium suscipit voluptatibus. Aut corporis debitis doloremque dolorum, eveniet explicabo fugiat libero molestias odit porro provident sint veniam, veritatis?
+			</div>
+			<div class="contentBlock">
+				标签3的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dicta fuga fugit illo ipsa iure perferendis possimus quidem quis voluptatibus? Accusamus accusantium explicabo harum illum, laborum magnam neque rem temporibus.
+			</div>
+			<div class="contentBlock">
+				标签4的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, adipisci alias architecto aspernatur, consequuntur, cumque distinctio ea enim exercitationem id illo illum in inventore ipsum quaerat qui quos sequi sit?
+			</div>
+		</div>
+
+        <div class="content" id="tabContent2">
+            <ul class="tabs">
+                <li class="active">标签1</li>
+                <li>标签2</li>
+                <li>标签3</li>
+                <li>标签4</li>
+            </ul>
+            <div class="contentBlock active">
+                标签1的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur aut dolorum ea earum eligendi esse excepturi explicabo id laborum molestiae nemo neque nobis non numquam praesentium provident quae, soluta tempora!
+            </div>
+            <div class="contentBlock">
+                标签2的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio fugit neque praesentium suscipit voluptatibus. Aut corporis debitis doloremque dolorum, eveniet explicabo fugiat libero molestias odit porro provident sint veniam, veritatis?
+            </div>
+            <div class="contentBlock">
+                标签3的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto dicta fuga fugit illo ipsa iure perferendis possimus quidem quis voluptatibus? Accusamus accusantium explicabo harum illum, laborum magnam neque rem temporibus.
+            </div>
+            <div class="contentBlock">
+                标签4的内容
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, adipisci alias architecto aspernatur, consequuntur, cumque distinctio ea enim exercitationem id illo illum in inventore ipsum quaerat qui quos sequi sit?
+            </div>
+        </div>
+	</body>
+	<script type="application/javascript">
+        //第一种方法：主要是采用的面向过程这样的一个，直接写的函数
+//        var tabs=document.getElementById("tabs");
+//        var lis=tabs.getElementsByTagName('li');
+//        var divContentBlock=document.getElementsByClassName("contentBlock");
+//		for(var i=0;i<lis.length;i++){
+//			lis[i].onclick=(function(j){//在这里需要用闭包保留一下i ;或者直接var i=0;==>let i=0;
+//				return function(){
+//					for(var i=0;i<lis.length;i++){
+//						lis[i].className="";
+//						divContentBlock[i].style.display="none";
+//					}
+//					lis[j].className="active";
+//					divContentBlock[j].style.display="block";
+//				}
+//			})(i);
+//		}
+
+        //第二种方法：下面的这个方法是采用的面向对象形式
+        var Tabs=function(id){//创建构造函数
+            var tabContent=document.getElementById(id);
+            var tabs=tabContent.getElementsByClassName('tabs')[0];
+            this.lis=tabs.getElementsByTagName('li');//这里采用this.lis是为了之后可以在原型里面被调用
+            this.divContentBlock=tabContent.getElementsByClassName("contentBlock");
+            for(let i=0;i<this.lis.length;i++){//在这里采用了let保留局部变量
+                var self=this;//这里的this需要保留下来，因为他指的是Tabs对象实例化后的新对象
+                this.lis[i].onclick=function(){
+                    self.tabChange(i);
+                }
+            }
+        };
+        Tabs.prototype.tabChange=function(j){//在构造函数上定义一个tabChange方法
+            for(var i=0;i<this.lis.length;i++){
+                this.lis[i].className="";
+                this.divContentBlock[i].style.display="none";
+            }
+            this.lis[j].className="active";
+            this.divContentBlock[j].style.display="block";
+        };
+        new Tabs('tabContent');
+        new Tabs('tabContent2');
+
+	</script>
+</html>
