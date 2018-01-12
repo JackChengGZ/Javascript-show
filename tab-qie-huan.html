@@ -109,12 +109,30 @@
             var tabs=tabContent.getElementsByClassName('tabs')[0];
             this.lis=tabs.getElementsByTagName('li');//这里采用this.lis是为了之后可以在原型里面被调用
             this.divContentBlock=tabContent.getElementsByClassName("contentBlock");
+
+            //下面采用两种方法保留了全局变量i防止被污染
+//            第一种let，个人觉得这个更好
             for(let i=0;i<this.lis.length;i++){//在这里采用了let保留局部变量
                 var self=this;//这里的this需要保留下来，因为他指的是Tabs对象实例化后的新对象
+//                console.log(self);
                 this.lis[i].onclick=function(){
+//                    console.log(this);//这里的this是当前的对象lis[i]
                     self.tabChange(i);
                 }
             }
+//            第二种匿名函数
+//            for(var i=0;i<this.lis.length;i++){//在这里必须保留局部变量i,下面是采用了匿名函数;或者采用let i=0;主要是是产生块级作用域
+//                var self=this;//这里的this需要保留下来，因为他指的是Tabs对象实例化后的新对象
+////                console.log(self);//在这里的
+//                (function(j){
+////                    console.log(this);//在这里的this指向了全局对象window
+//                    self.lis[j].onclick=function(){
+//                        self.tabChange(j);
+//                    }
+//                })(i);
+//            }
+
+
         };
         Tabs.prototype.tabChange=function(j){//在构造函数上定义一个tabChange方法
             for(var i=0;i<this.lis.length;i++){
