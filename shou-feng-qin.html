@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        html,body,div,ul,li{
+            padding: 0;
+            margin: 0;
+        }
+        ul,ol{
+            list-style: none;
+        }
+        .ac{
+            border: 2px solid #ddd;
+            width: 500px;
+            margin: 100px auto;
+        }
+        .ac .ac-item .ac-item-hd{
+            height: 50px;
+            line-height: 50px;
+            background: #efefef;
+            margin-top: 10px;
+            padding-left: 20px;
+            cursor: pointer;
+        }
+        .ac .ac-item .ac-item-bd{
+            height: 200px;
+            padding: 10px;
+            display: none;
+        }
+        .ac .ac-item .ac-item-bd.active{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <ul class="ac">
+        <li class="ac-item">
+            <div class="ac-item-hd">头部1</div>
+            <div class="ac-item-bd active">内容1</div>
+        </li>
+        <li class="ac-item">
+            <div class="ac-item-hd">头部2</div>
+            <div class="ac-item-bd">内容2</div>
+        </li>
+        <li class="ac-item">
+            <div class="ac-item-hd">头部3</div>
+            <div class="ac-item-bd">内容3</div>
+        </li>
+        <li class="ac-item">
+            <div class="ac-item-hd">头部4</div>
+            <div class="ac-item-bd">内容4</div>
+        </li>
+    </ul>
+</body>
+<script type="application/javascript">
+    /*
+    * 手风琴效果
+    * */
+    window.onload=function(){
+        var liDivArray=document.querySelectorAll('.ac .ac-item .ac-item-hd');
+//        console.log(liDivArray[0].nextElementSibling)
+        for(var i=0;i<liDivArray.length;i++){
+            liDivArray[i].onclick=function(e){
+//                console.log(this.nextElementSibling);
+//                console.log(this.nextElementSibling.className);
+                //li被点击后，自己添加active样式类 兄弟元素去掉active
+                if(this.nextElementSibling.className=='ac-item-bd active'){
+                    removeLliDivArrayClass();
+                    this.nextElementSibling.className='ac-item-bd';
+                }else{
+                    removeLliDivArrayClass();
+                    this.nextElementSibling.className='ac-item-bd active';
+                }
+
+            }
+        }
+        function removeLliDivArrayClass(){
+            for(var j=0;j<liDivArray.length;j++){
+                liDivArray[j].nextElementSibling.className='ac-item-bd';
+            }
+        }
+    }
+
+</script>
+</html>

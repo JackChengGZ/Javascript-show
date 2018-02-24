@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        ul,ol{
+            list-style: none;
+        }
+        a{
+            text-decoration: none;
+            color: #000;
+        }
+        .slideShow{
+            position: relative;
+            width: 790px;
+            height: 340px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .slideShow .slide-img-wrap{
+            position: absolute;
+            width: 3160px;
+        }
+        .slideShow .slide-img-wrap li{
+            float: left;
+            width: 790px;
+        }
+        .slideShow .slide-img-wrap li a{
+            display: inline-block;
+        }
+        .slide-btn-wrap a{
+            position: absolute;
+            width: 20px;
+            height: 50px;
+            line-height: 50px;
+            background: #666666;
+            font-weight: bolder;
+            top:145px;
+            text-align: center;
+        }
+        .slide-btn-wrap .prev{
+            left: 0;
+        }
+        .slide-btn-wrap .next{
+            right: 0;
+        }
+        .slide-sel-btn{
+            position: absolute;
+            height: 20px;
+            bottom: 30px;
+            left: 295px;
+            width: 200px;
+            text-align: center;
+        }
+        .slide-sel-btn a{
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #fff;
+            margin: 0 8px;
+        }
+        .slide-sel-btn a.active{
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideShow">
+        <!--图片的位置-->
+        <ul class="slide-img-wrap">
+            <!--<li index="3"><a href=""><img src="img/4.jpg" alt=""/></a></li>-->
+            <li index="0" class="active"><a href=""><img src="img/1.jpg" alt=""/></a></li>
+            <li index="1"><a href=""><img src="img/2.jpg" alt=""/></a></li>
+            <li index="2"><a href=""><img src="img/3.jpg" alt=""/></a></li>
+            <li index="3"><a href=""><img src="img/4.jpg" alt=""/></a></li>
+            <!--<li index="0"><a href=""><img src="img/1.jpg" alt=""/></a></li>-->
+        </ul>
+        <!--按钮-->
+        <div class="slide-btn-wrap">
+            <a href="###" class="prev" id="btnPrev"><</a>
+            <a href="###" class="next" id="btnNext">></a>
+        </div>
+        <!--四个圆圈-->
+        <div class="slide-sel-btn">
+            <a index="0" href="###" class="active"></a>
+            <a index="1" href="###"></a>
+            <a index="2" href="###"></a>
+            <a index="3" href="###"></a>
+        </div>
+    </div>
+</body>
+<script type="application/javascript">
+    /**
+     * 轮播图效果
+     *  这个轮播不是很完善 需要修改
+     * */
+    window.onload=function(){
+        var btnPrev=document.getElementById('btnPrev');
+        var btnNext=document.getElementById('btnNext');
+        var selBtnDiv=document.querySelector('.slide-sel-btn');
+
+        btnNext.onclick=function(e){
+            slideShowNext();
+        }
+        btnPrev.onclick=function(e){
+            //滑动下一张图片
+            var curLi=document.querySelector('.slide-img-wrap .active');
+//            console.log(curLi);
+            var curIndex=parseInt(curLi.getAttribute('index'));//获取当前index属性上的值
+            var nextIndex=(curIndex-1+4)%4;//这个进行取余数就是0，1，2，3  这是一个很巧妙的设计
+            slide(curIndex,nextIndex);
+        }
+        //具体选择圆圈的跳转  利用事件委托
+        selBtnDiv.onclick=function(e){
+            e=e||window.event;
+            var target= e.target|| e.srcElement;
+//            console.log(target);
+//            console.log(this)//这里的this是selBtnDiv
+            if(target==this){
+                return;
+            }
+            var nextIndex=parseInt(target.getAttribute('index'));
+            var curA=document.querySelector('.slide-sel-btn .active');
+            var curIndex=parseInt(curA.getAttribute('index'));
+            slide(curIndex,nextIndex);
+        }
+        //实现自动轮播
+        autoSlide();
+
+    }
+
+
+        var timer=null;
+        //实现自动轮播
+        function autoSlide(){
+            //先去掉timer
+            if(timer){
+                clearInterval(timer);
+            }
+            timer=setInterval(function(){
+                slideShowNext()
+            },3500)
+        }
+
+        function slideShowNext(){
+            //滑动下一张图片
+            var curLi=document.querySelector('.slide-img-wrap .active');
+//            console.log(curLi);
+            var curIndex=parseInt(curLi.getAttribute('index'));//获取当前index属性上的值
+            var nextIndex=(curIndex+1)%4;//这个进行取余数就是0，1，2，3  这是一个很巧妙的设计
+            slide(curIndex,nextIndex);
+        }
+
+        //将公共的代码封装slide
+        function slide(curIndex,nextIndex){
+            var nextLeft=nextIndex*(-790);//这个是图片根据索引向左移动的距离0  -790   -1580  -2370
+    //            console.log(nextLeft);
+            //要让下一个图片的左放到盒子的最左侧
+            var imgList=document.querySelector('.slide-img-wrap');
+            var curLeft=imgList.offsetLeft;//当前的左边距离
+//            imgList.style.left=nextLeft+'px';
+            slideAnimate(curLeft,nextLeft,imgList,500);
+            //影藏上一张图片，显示下一张图片
+            var liArray=document.querySelectorAll('.slide-img-wrap li');
+            liArray[curIndex].className='';
+            liArray[nextIndex].className='active';
+            //配合显示小圆圈
+            var slideSelBtnArray=document.querySelectorAll('.slide-sel-btn a');
+            slideSelBtnArray[curIndex].className='';
+            slideSelBtnArray[nextIndex].className='active';
+        }
+
+        //对元素连续滚动
+        function slideAnimate(curLeft,endLeft,element,duration){
+            var w=endLeft-curLeft;//总的滑动的距离
+            var wPerMs=w/duration;//每毫秒需要走的距离、
+            var startTime=Date.now();
+            var animateTimer=setInterval(function(){
+                var curTime=Date.now();
+                var delateTime=curTime-startTime;
+                element.style.left=(element.offsetLeft+delateTime*wPerMs)+'px';
+                duration=duration-delateTime;
+                if(duration<=0){
+                    element.style.left=endLeft+'px';
+                    clearInterval(animateTimer);
+                    return;
+                }
+                startTime=curTime;
+            },1000/60)
+        }
+</script>
+</html>

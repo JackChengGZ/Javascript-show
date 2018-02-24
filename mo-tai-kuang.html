@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        html,body,div,h3{
+            padding: 0;
+            margin: 0;
+        }
+        .dialog-wrap{
+            display: none;
+        }
+        .dialog{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -151px;
+            margin-top: -151px;
+            background-color: #eee;
+            border: 1px solid #ccc;
+            width: 300px;
+            z-index: 1000;
+        }
+        .dialog .dialog-h{
+            border-bottom: 1px solid #ccc;
+            height: 30px;
+            position: relative;
+        }
+        .dialog-b{
+            height: 269px;
+        }
+        .dialog .dialog-h .btn-close{
+            position: absolute;
+            right: 15px;
+            top: 5px;
+            cursor: pointer;
+        }
+        .dialog-cover{
+            /*如果一个div的父容器为body,而且是绝对定位，那么left top right bottom为0*/
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #000;
+            z-index: 100;
+            /*设置透明 做个兼容*/
+            filter: alpha(opacity=50);
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+
+<input type="button" value="弹出对话框" id="btn"/>
+
+<div class="dialog-wrap"  id="mDialog" title="hello">
+    <!--1.div的class=dialog-wrap-->
+    <!--2.需要给div增加title属性，如果没有加就为空-->
+    <!--3.div的innerHTML就是显示在对话框上的信息-->
+
+    <!--注释的部分需要封装js起来-->
+    <!--<div class="dialog-cover"></div>-->
+    <!--<div class="dialog" id="dialog">-->
+        <!--<div class="dialog-h">-->
+            <!--<h3>对话框头部</h3>-->
+            <!--<i class="btn-close" id="btn-close">X</i>-->
+        <!--</div>-->
+        <!--<div class="dialog-b">-->
+            <div>
+                <h1>111</h1>
+            </div>
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+
+
+</body>
+<script type="application/javascript">
+    /*
+    * 模态对话框
+    *   半透明：opacity ie9+支持 1表示不透明  0表示完全透明
+    *           alpha(opacity=50) ie8支持 opacity是0-100之间的值
+    * */
+        window.onload=function(){
+            var btn=document.getElementById('btn');
+            var dialog=new JackTools.Dialog("#mDialog");
+//            var dialog=L.Dialog("#mDialog");//解决用户忘了写new
+            btn.onclick=function(){
+//                var divDialog=document.getElementById('dialogBox');
+//                divDialog.style.display='block'
+
+//                可能框架有多个组件。要兼容扩展其他的组件。L框架
+                dialog.show();
+            }
+//            var btnClose=document.getElementById('btn-close');
+//            btnClose.onclick=function(){
+//                this.parentNode.parentNode.parentNode.style.display='none';
+//            }
+
+            var btn2=new JackTools.ShuChuNum();
+            btn2.show();
+        }
+
+    //封装一个JackTools的库，里面有很多的组件比如Dialog组件
+        ;(function(w){
+        //w.JackTools={};//定义L框架
+        var JackTools=w.JackTools?w.JackTools:{};//占用了全局L变量名 防止window对象上已被被其他人用了L
+        JackTools.Dialog=function(selector){//定义一个模态框组件  selector是选择器  L对象上定义一个Dialog方法
+//            if(JackTools.Dialog.cache[selector]){//判断是否已经创建
+//                return JackTools.Dialog.cache[selector];
+//            }
+            var dialogDiv=document.querySelector(selector);//获得对象
+            if(!dialogDiv){
+                return;
+            }
+            var title=dialogDiv.getAttribute('title');//获得对象title属性值
+            //<div class="dialog-cover"></div>  遮罩层
+            var dialogCover=document.createElement('div');
+            dialogCover.className='dialog-cover';
+            dialogCover.style.display='none';
+            document.body.appendChild(dialogCover);
+            //封装下面的内容
+            //<div class="dialog" id="dialog">
+            //<div class="dialog-h">
+            //<h3>对话框头部</h3>
+            //<i class="btn-close" id="btn-close">X</i>
+            //</div>
+            //<div class="dialog-b">
+            //内部
+            //</div>
+            //</div>
+            var strHTML="";
+            strHTML+='<div class="dialog">';
+            strHTML+=   '<div class="dialog-h">';
+            strHTML+=       '<h3>'+title+'</h3>';
+            strHTML+=       '<i class="btn-close">X</i>';
+            strHTML+=   '</div>';
+            strHTML+=   '<div class="dialog-b">'+dialogDiv.innerHTML+'</div>';
+            strHTML+='</div>';
+            //将所有的内容放入dialogDiv
+            dialogDiv.innerHTML=strHTML;
+
+            var dialog={
+                dialogDiv:dialogDiv,
+                title:title,
+                dialogCover:dialogCover,//遮罩层
+                show:function(){
+                    //弹出层
+                    this.dialogCover.style.display='block';
+                    this.dialogDiv.style.display='block';
+                    var self=this;
+                    var btnClose=dialogDiv.querySelector('.btn-close');
+                    btnClose.onclick=function(){
+                        self.close();
+                    }
+                },
+                close:function(){
+                    //关闭层
+                    this.dialogCover.style.display='none';
+                    this.dialogDiv.style.display='none';
+                    var self=this;
+                    var btnClose=dialogDiv.querySelector('.btn-close');
+                    btnClose.onclick=null;
+                }
+            };
+
+//            //在函数上面创建一个缓存
+//            JackTools.Dialog.cache[selector]=dialog;
+            //通过return 的方式返回这个dialog对象
+            return dialog;
+
+        };
+//        //在函数上面创建一个缓存
+//        JackTools.Dialog.cache={};
+        w.JackTools=JackTools;
+    })(window||{});
+
+        ;(function(w){
+            //w.JackTools={};//定义L框架
+            var JackTools=w.JackTools?w.JackTools:{};//占用了全局L变量名
+            JackTools.ShuChuNum=function(){//这个是一个输出数字的组件ShuChuNum
+                var d=1;
+                var shuchuNum={
+                    d:d,
+                    show:function(){
+                        console.log(this.d);
+                    }
+                }
+                return shuchuNum;
+            };
+            w.JackTools=JackTools;
+        })(window||{});
+
+</script>
+</html>

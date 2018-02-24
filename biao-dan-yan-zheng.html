@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form id="form" action="#">
+    <table>
+        <tr>
+            <td>姓名：</td>
+            <td><input type="text" placeholder="文本6-20个字符" id="txtName"/></td>
+        </tr>
+        <tr>
+            <td>邮箱：</td>
+            <td><input type="text" id="txtEmail"/></td>
+        </tr>
+        <tr>
+            <td>Tel：</td>
+            <td><input type="text" id="txtTel"/></td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="提交"/>
+                <input type="reset" value="重置"/>
+            </td>
+
+        </tr>
+    </table>
+</form> 
+</body>
+<script type="application/javascript">
+    /*
+    * 表单验证
+    * 两种表单校验的方法：
+    *   1.在表单的提交按钮点击事件中
+    *   2.表单的submit事件中处理
+    *   3.表单控件失去焦点
+    *   html也新增了一些智能表单标签
+    * 表单校验可以使用正则表达式
+    *
+    * */
+    window.onload=function(){
+//        var form=document.forms[0];
+        var form=document.getElementById('form');
+
+        //文本错误信息的提醒
+        var txtNameMsg=document.createElement('span');
+        txtNameMsg.innerHTML='文本必须6-20个字符';
+        txtNameMsg.style.color='red';
+        //form表单提交事件
+        form.onsubmit=function(e){
+            var txtName=document.getElementById('txtName');
+            var txtNameRegExp=/\w{6,20}/gi;
+            if(txtNameRegExp.test(txtName.value)){
+                //移除错误消息
+                txtName.parentNode.removeChild(txtNameMsg);
+            }else{
+                //添加错误消息
+                txtName.parentNode.appendChild(txtNameMsg);
+                return false;//因为是submit 直接false
+            }
+
+////            console.log('1');
+//            e=e||window.event;
+//            if(e.preventDefault){
+//                e.preventDefault();
+//            }else{
+//                e.returnValue=false;
+//            }
+//            return false;
+        }
+    }
+
+
+</script>
+</html>

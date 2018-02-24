@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        ul{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            /*height: 300px;overflow: scroll;*/
+        }
+        img{
+            border: none;
+            vertical-align: middle;
+        }
+        .in{
+            border: 1px solid black;
+            margin: 10px;
+            text-align: center;
+            height: 400px;
+            width: 400px;
+            float: left;
+        }
+        .in img{
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+<ul class="list">
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a1d17fdNcaccbe18.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a2f86a4Nde653ca7.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a338b4cNed45c5dc.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a339577Nbc83b112.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a33992bNb9c2bdbf.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a338b4cNed45c5dc.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a2f86a4Nde653ca7.jpg"></li>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <li class="in"><img src="loading.gif" alt="测试" data-original = "5a33992bNb9c2bdbf.jpg"></li>
+</ul>
+
+<script>
+    var oBtn = document.getElementsByTagName('button')[0];
+    var aImages = document.images;
+    loadImg(aImages);
+    window.onscroll = function(){
+        loadImg(aImages);
+    };
+    function loadImg(arr){
+        for( var i = 0,len = arr.length; i < len; i++){
+//            console.log(arr[i].offsetTop);
+//            console.log(document.body.clientHeight);
+//            console.log('++++++++++++++++++++++++++++++');
+            console.log(arr[i].getBoundingClientRect().top);
+            console.log(document.documentElement.clientHeight);
+            console.log('++++++++++++++++++++++++++++++');
+            if(arr[i].getBoundingClientRect().top < document.body.clientHeight && !arr[i].isLoad){
+//            if(arr[i].getBoundingClientRect().top < document.documentElement.clientHeight && !arr[i].isLoad){
+                arr[i].isLoad = true;
+                arr[i].style.cssText = "transition: ''; opacity: 0;";
+                if(arr[i].dataset){
+                    aftLoadImg(arr[i],arr[i].dataset.original);
+                }else{
+                    aftLoadImg(arr[i],arr[i].getAttribute("data-original"));
+                }
+                (function(i){
+                    setTimeout(function(){
+                        arr[i].style.cssText = "transition: 3s; opacity: 1;"
+                    },150)
+                })(i);
+            }
+        }
+    }
+    function aftLoadImg(obj,url){
+//        var oImg = new Image();
+//        oImg.onload = function(){
+//            obj.src = oImg.src;
+//        }
+//        oImg.src = url;
+        obj.src=url;
+    }
+
+</script>
+</body>
+</html>

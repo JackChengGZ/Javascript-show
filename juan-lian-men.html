@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        html,body,div{
+            padding:0;
+            margin: 0;
+        }
+        .wrap{
+            width: 300px;
+            margin: 0 auto;
+        }
+        .box{
+            border: 1px solid #ccc;
+            width: 300px;
+            height: 300px;
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap" class="wrap">
+        <input type="button" value="折叠" id="btnSlideUp"/>
+        <input type="button" value="展开" id="btnSlideDown"/>
+        <div class="box" id="box">
+            我是box  卷帘门效果
+        </div>
+    </div>
+</body>
+<script type="application/javascript">
+    (function(){
+        window.onload=function(){
+            var btnSlideUp=document.getElementById('btnSlideUp');
+            var btnSlideDown=document.getElementById('btnSlideDown');
+            var box=document.getElementById('box');
+
+            btnSlideUp.onclick=function(){
+                var start=Date.now();//返回当前的毫秒数
+                var originH=box.clientHeight;//不包括边框 拿到内容高度
+//                console.log(originH);
+//                var reduceH=0;
+                //一秒钟后div消失
+                var timer=setInterval(function(){
+                    var now=Date.now();
+//                    console.log(now-start);
+                    //两个时间相差的毫秒数now-start  点击那一刻和执行时候的毫秒差
+                    var reduceH=(now-start)*originH/1000;//减少的高度  也就是1秒钟减少的高度
+//                    reduceH+=5;//或者采用给定减少高度值
+                    box.style.height=(originH-reduceH)+'px';
+                    if(originH<=reduceH){
+                        //停止折叠 影藏div 停止定时器
+                        box.style.height=originH+'px';//还是要把他恢复高度之后再影藏
+                        box.style.display='none';
+                        clearInterval(timer);
+                    }
+//                    start=now;
+                },1000/60);
+            }
+
+            btnSlideDown.onclick=function(){
+                var start=Date.now();
+                box.style.display='block';
+                var originH=box.clientHeight;
+//                console.log(box.clientHeight);//0 如果div的display为none 那么clientHeight为0
+                box.style.height='0px';
+                var timer=setInterval(function(){
+                    var now=Date.now();
+                    box.style.height=(now-start)/1000*originH+'px';
+                    console.log(now-start);
+                    if(now-start>=1000){
+                        box.style.height=originH+'px';
+                        clearInterval(timer);
+                    }
+                },1000/60);
+
+
+            }
+        }
+    })();
+
+
+    //封装以上代码 ---下面这个封装好像有问题
+//    (function(){
+//        window.onload=function(){
+//            var btnSlideUp=document.getElementById('btnSlideUp');
+//            var btnSlideDown=document.getElementById('btnSlideDown');
+//            var box=document.getElementById('box');
+//            btnSlideDown.onclick=function(){
+//                slideDown(box,1000);
+//            }
+//
+//        }
+//    })();
+//    /*
+//    * @description 进行向下展开的函数
+//    * @param { HTMLElement } element - 进行动画的标签
+//    * @param { number }  duration -动画持续的时间
+//    * @return { undefined }
+//    * */
+//    function slideDown(element,duration){
+//        var start=Date.now();//开始动画时间
+//        element.style.display='block';
+//        var originH=element.clientHeight;
+//        element.style.height='0px';
+//        var timer=setInterval(function(){
+//            var now=Date.now();
+//            element.style.height=(now-start)/duration*originH+'px';
+//            if((now-start)>=duration){
+//                element.style.display=originH+'px';
+//                clearInterval(timer);
+//            }
+//        },1000/60)
+//
+//    }
+</script>
+</html>
